@@ -5,7 +5,7 @@ module Aloha
       if u
         u
       else
-        raise "#{client.users.keys}: #{data.user}"
+        raise "#{client.users.keys}: #{data.user}: #{data.user.class}"
       end
     end
   end
