@@ -1,7 +1,7 @@
 module Aloha
   class SlackUser
     def self.find(client, data)
-      u = client.users[data.user]
+      u = client.users[data.user] || client.users[data.user.id]
       if u
         u
       else
