@@ -3,14 +3,13 @@ module Aloha
     def refresh
       Aloha::Hooks::LoadMessages.new.call(client, data)
       username = Aloha::SlackUser.find(client, data).name
-      username = client.users[data.user].name
 
       Aloha::Server.say(client, username, "Refreshed! There are #{Message.count} total messages.")
     end
 
     def update
       username = Aloha::SlackUser.find(client, data).name
-      username = client.users[data.user].name
+
       attachments = [
         { fallback: "Find your app name on Heroku at https://dashboard.heroku.com/apps",
           title: "Find Your App Name on Heroku",

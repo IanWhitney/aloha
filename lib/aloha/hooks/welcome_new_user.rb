@@ -2,16 +2,15 @@ module Aloha
   module Hooks
     class WelcomeNewUser
       def call client, data
-        username = Aloha::SlackUser.find(client, data).name
-        username = client.users[data.user.id].name
-        return if username == client.name
-        user_id = client.users[data.user.id].id
+        slack_user = Aloha::SlackUser.find(client, data)
 
-        user = User.where(slack_id: user_id).first_or_initialize
-        user.username = username
+        return if slack_user.name == client.name
+
+        user = User.where(slack_id: slack_user.id).first_or_initialize
+        user.username = slack_user.name
         user.save!
 
-        Aloha::Server.say(client, username, "Welcome to #{client.team.name}!")
+        Aloha::Server.say(client, user.username, "Welcome to #{client.team.name}!")
         Message.all.each do |message|
           message.deliver!(client, user)
         end
