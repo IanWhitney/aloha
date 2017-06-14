@@ -12,8 +12,8 @@ module Aloha
 
         user_id = client.users[data.user].id
         user = User.find_by(slack_id: user_id)
-        
-        if user.is_admin?
+
+        if user && user.is_admin?
           latest_version_json = JSON.parse(HTTP.get(REMOTE_VERSION_JSON_URL).to_s)
           current_version_json = JSON.parse(File.open(File.join($ROOT_FOLDER, "config", "version.json")).read)
           if latest_version_json["version"].to_s.blank?
