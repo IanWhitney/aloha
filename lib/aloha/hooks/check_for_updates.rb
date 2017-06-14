@@ -8,6 +8,7 @@ module Aloha
       REMOTE_VERSION_JSON_URL = "https://raw.githubusercontent.com/ftwnyc/aloha/update-notifications/config/version.json"
       def call client, data
         return if data.presence != 'active'
+        username = Aloha::SlackUser.find(client, data).name
         return if client.users[data.user].name == client.name
 
         user_id = client.users[data.user].id

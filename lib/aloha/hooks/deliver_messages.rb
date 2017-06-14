@@ -3,11 +3,12 @@ module Aloha
     class DeliverMessages
       def call client, data
         return if data.presence != 'active'
+      username = Aloha::SlackUser.find(client, data).name
         return if client.users[data.user].name == client.name
 
         user_id = client.users[data.user].id
         user = User.find_by(slack_id: user_id)
-        
+
         if user
           Message.all.each do |message|
             message.deliver!(client, user)

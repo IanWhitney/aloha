@@ -2,11 +2,14 @@ module Aloha
   class Controller < SlackRubyBot::MVC::Controller::Base
     def refresh
       Aloha::Hooks::LoadMessages.new.call(client, data)
+      username = Aloha::SlackUser.find(client, data).name
       username = client.users[data.user].name
+
       Aloha::Server.say(client, username, "Refreshed! There are #{Message.count} total messages.")
     end
 
     def update
+      username = Aloha::SlackUser.find(client, data).name
       username = client.users[data.user].name
       attachments = [
         { fallback: "Find your app name on Heroku at https://dashboard.heroku.com/apps",
@@ -69,7 +72,7 @@ TEXT
     def help
       command = match[:expression]
 
-      text = command.present? ? SlackRubyBot::CommandsHelper.instance.command_full_desc(command) 
+      text = command.present? ? SlackRubyBot::CommandsHelper.instance.command_full_desc(command)
                               : self.class.general_text
       if command.present?
         client.say(channel: data.channel, text: text)

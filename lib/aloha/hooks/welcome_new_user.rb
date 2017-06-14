@@ -2,10 +2,10 @@ module Aloha
   module Hooks
     class WelcomeNewUser
       def call client, data
-        raise "#{client.users.keys},\n ***** #{data.user} ****"
-        username = client.users[data.user].name
+        username = Aloha::SlackUser.find(client, data).name
+        username = client.users[data.user.id].name
         return if username == client.name
-        user_id = client.users[data.user].id
+        user_id = client.users[data.user.id].id
 
         user = User.where(slack_id: user_id).first_or_initialize
         user.username = username
