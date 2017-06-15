@@ -10,7 +10,7 @@ module Aloha
 
         if user
           Message.all.each do |message|
-            message.deliver!(client, user)
+            message.deliver!(client, user, self)
           end
         end
       end

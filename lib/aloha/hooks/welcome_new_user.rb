@@ -12,7 +12,7 @@ module Aloha
 
         Aloha::Server.say(client, user.username, "Welcome to #{client.team.name}!")
         Message.all.each do |message|
-          message.deliver!(client, user)
+          message.deliver!(client, user, self)
         end
       end
     end
